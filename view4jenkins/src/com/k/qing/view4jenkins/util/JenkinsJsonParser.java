@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.k.qing.view4jenkins.bean.JenkinsProject;
 import com.k.qing.view4jenkins.bean.JenkinsView;
 
 public class JenkinsJsonParser {
@@ -52,6 +53,43 @@ public class JenkinsJsonParser {
 		}
 		
 		return jenkinsViewList;
+	}
+	
+	public List<JenkinsProject> getProjectListFromView(String viewUrl) {
+		
+		viewUrl = viewUrl + "/api/json/";
+		
+		List<JenkinsProject> projectList = new ArrayList<JenkinsProject>();
+		
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpPost request = new HttpPost(viewUrl);
+		HttpResponse response;
+		try {
+			response = httpClient.execute(request);
+			String result = EntityUtils.toString(response.getEntity());
+			JSONObject object = new JSONObject(result);
+			JSONArray jsonArray = object.getJSONArray("jobs"); 
+            for(int i=0;i<jsonArray.length();i++){ 
+                JSONObject jsonObject2 = (JSONObject)jsonArray.opt(i);
+                
+                String jobName = jsonObject2.getString("name");
+                String jobUrl = jsonObject2.getString("url");
+                
+                JenkinsProject jenkinsProject = new JenkinsProject(jobName, jobUrl);
+                projectList.add(jenkinsProject);
+            }
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return projectList;
 	}
 	
 	public void a() throws Exception {

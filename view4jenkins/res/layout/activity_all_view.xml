@@ -2,11 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false" >
+    android:baselineAligned="false"
+    android:orientation="vertical" >
 
     <TabHost
         android:id="@+id/myTabHost"
-        android:layout_width="0dip"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1" >
 
@@ -42,6 +43,8 @@
                         android:id="@+id/mainExpandableListView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -71,4 +74,10 @@
         </LinearLayout>
     </TabHost>
 
+    
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh" />
 </LinearLayout>
