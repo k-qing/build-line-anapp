@@ -39,6 +39,13 @@ public class JenkinsJsonParser {
                 String viewUrl = jsonObject2.getString("url");
                 
                 JenkinsView jenkinsView = new JenkinsView(viewName, viewUrl);
+                
+                if(viewUrl != null) {
+                	List<JenkinsProject> projectList = this.getProjectListFromView(viewUrl);
+                	jenkinsView.setJenkinsProjectList(projectList);
+                }
+                
+                
                 jenkinsViewList.add(jenkinsView);
             }
 		} catch (ClientProtocolException e) {

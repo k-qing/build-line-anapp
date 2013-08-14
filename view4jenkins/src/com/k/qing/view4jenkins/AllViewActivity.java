@@ -3,16 +3,10 @@ package com.k.qing.view4jenkins;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.k.qing.view4jenkins.bean.JenkinsProject;
-import com.k.qing.view4jenkins.bean.JenkinsView;
-import com.k.qing.view4jenkins.util.JenkinsJsonParser;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +19,10 @@ import android.widget.ExpandableListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.k.qing.view4jenkins.bean.JenkinsProject;
+import com.k.qing.view4jenkins.bean.JenkinsView;
+import com.k.qing.view4jenkins.util.JenkinsJsonParser;
+
 public class AllViewActivity extends Activity {
 
 	private List<String> groupData;
@@ -36,12 +34,12 @@ public class AllViewActivity extends Activity {
 		public void handleMessage(Message msg) {  
             switch (msg.what) {  
             case 1:  
-                update();  
+            	List<JenkinsView> jenkinsViewList = (List<JenkinsView>)msg.obj;
+            	update(jenkinsViewList);
                 break;  
             }  
         };  
 	};
-	private UpdateDataRunnable updater = new UpdateDataRunnable();
 	
 	private String jenkinsURL = "http://10.0.2.2:8080/jenkins/api/json";
 
@@ -50,7 +48,6 @@ public class AllViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_all_view);
 		
-		handler = new Handler();
 		
 		TabHost tabHost = (TabHost) findViewById(R.id.myTabHost);
 
@@ -133,15 +130,13 @@ public class AllViewActivity extends Activity {
 		}
 	}
 	
-	public void update() {
+	public void update(List<JenkinsView> jenkinsViewList) {
 		childrenData.clear();
 		groupData.clear();
 		try {
-			JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-			List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(jenkinsURL);
 			for(JenkinsView jenkinsView : jenkinsViewList) {
 				groupData.add(jenkinsView.getName());
-				List<JenkinsProject> projectList = jenkinsJsonParser.getProjectListFromView(jenkinsView.getUrl());
+				List<JenkinsProject> projectList = jenkinsView.getJenkinsProjectList();
 				List<String> projectNameList = new ArrayList<String>();
 				for(JenkinsProject jenkinsProject : projectList) {
 					projectNameList.add(jenkinsProject.getName());
@@ -161,6 +156,12 @@ public class AllViewActivity extends Activity {
 		public void run() {
 			Message message = new Message();
 			message.what = 1;
+			
+			JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+			List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(jenkinsURL);
+			
+			message.obj = jenkinsViewList;
+			
 			handler.sendMessage(message);
 		}
 	}
