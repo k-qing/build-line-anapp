@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -98,22 +97,4 @@ public class JenkinsJsonParser {
 		
 		return projectList;
 	}
-	
-	public void a() throws Exception {
-		// we'll just take the root object as an example
-				String url = "http://10.0.2.2:8080/jenkins/api/json";
-
-				// if you are calling security-enabled Hudson and
-				// need to invoke operations and APIs that are protected,
-				// consult the 'SecuredMain" class
-				// in this package for an example using HttpClient.
-
-				DefaultHttpClient httpClient = new DefaultHttpClient();
-				HttpGet request = new HttpGet(url);
-				HttpResponse response = httpClient.execute(request);
-				String result = EntityUtils.toString(response.getEntity());
-				JSONObject object = new JSONObject(result);
-				System.out.println(object);
-	}
-
 }

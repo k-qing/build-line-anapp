@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,17 +32,17 @@ public class AllViewActivity extends Activity {
 	final ExpandableAdapter expandableAdapter = new ExpandableAdapter();
 	
 	private Handler handler = new Handler() {
-		public void handleMessage(Message msg) {  
-            switch (msg.what) {  
-            case 1:  
-            	List<JenkinsView> jenkinsViewList = (List<JenkinsView>)msg.obj;
-            	update(jenkinsViewList);
-                break;  
-            }  
-        };  
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				List<JenkinsView> jenkinsViewList = (List<JenkinsView>) msg.obj;
+				update(jenkinsViewList);
+				break;
+			}
+		};
 	};
 	
-	private String jenkinsURL = "http://10.0.2.2:8080/jenkins/api/json";
+	public static String jenkinsURL = "http://10.0.2.2:8080/jenkins/api/json";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class AllViewActivity extends Activity {
 		
 		
 		TabHost tabHost = (TabHost) findViewById(R.id.myTabHost);
+		this.CreateLoginAlert();
 
 		this.initExpandableData();
 
@@ -125,8 +127,6 @@ public class AllViewActivity extends Activity {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-//			expandableAdapter.notifyDataSetChanged();
 		}
 	}
 	
@@ -164,6 +164,59 @@ public class AllViewActivity extends Activity {
 			
 			handler.sendMessage(message);
 		}
+	}
+	
+	private void CreateLoginAlert() {
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setTitle("账号登陆");
+		ad.setView(findViewById(R.layout.first_login));
+		AlertDialog adi = ad.create();
+		
+		
+
+//		/*     
+//	       */
+//		adi.setButton("登陆", new OnClickListener() {
+//
+//			@Override
+//			public void onClick(DialogInterface arg0, int arg1) {
+//
+//				EditText password = (EditText) adi
+//						.findViewById(R.id.txt_password);
+//				EditText account = (EditText) adi
+//						.findViewById(R.id.txt_username);
+//
+//				PassWord = password.getText().toString();
+//				Account = account.getText().toString();
+//				// 生成登陆对话框
+//				m_Dialog = ProgressDialog.show(Main.this, "请等待...",
+//						"正在为你登陆...", true);
+//
+//				mRedrawHandler.sleep(100);
+//			}
+//		});
+//
+//		adi.setButton2("试  玩", new OnClickListener() {
+//
+//			@Override
+//			public void onClick(DialogInterface arg0, int arg1) {
+//				ViewUtility.NavigateActivate(Main.this, SelectTheme.class);
+//			}
+//		});
+//
+		adi.show();
+//
+//		// 设置注册点击事件
+//		TextView register = (TextView) adi.findViewById(R.id.txt_toregister);
+//		register.setOnClickListener(new TextView.OnClickListener() {
+//			public void onClick(View v) {
+//				// 创建注册对话框
+//				CreateRegisterAlert();
+//				adi.dismiss();
+//
+//			}
+//		});
+
 	}
 	
 
