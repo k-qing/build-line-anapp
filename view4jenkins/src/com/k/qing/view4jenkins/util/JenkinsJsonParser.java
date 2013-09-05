@@ -24,7 +24,7 @@ public class JenkinsJsonParser {
 		String url = jenkinsUrl;
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpPost request = new HttpPost(url);
+		HttpPost request = new HttpPost(url + "api/json");
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);
