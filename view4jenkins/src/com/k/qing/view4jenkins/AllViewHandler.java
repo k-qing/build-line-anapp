@@ -23,7 +23,7 @@ import com.k.qing.view4jenkins.util.JenkinsJsonParser;
 public class AllViewHandler extends Handler {
 	private final WeakReference<Activity> mActivity;
 	
-	private List<Map<String, Object>> mData = new ArrayList<Map<String,Object>>();
+	private static List<Map<String, Object>> mData = new ArrayList<Map<String,Object>>();
 	
     public AllViewHandler(Activity activity) {
         mActivity = new WeakReference<Activity>(activity);
@@ -40,7 +40,7 @@ public class AllViewHandler extends Handler {
 				ListView expandableListView = (ListView) activity.findViewById(R.id.mainListView);
 				MyAdapter listAdapter = new MyAdapter(activity);
 				expandableListView.setAdapter(listAdapter);
-				this.initExpandableData();
+//				this.initExpandableData();
 				return;
 			default:
 				break;
@@ -50,11 +50,15 @@ public class AllViewHandler extends Handler {
 		}
     }
     
-    private void initExpandableData() {
+    public void initExpandableData() {
 		new Thread(new InitDataRunnable()).start();
 	}
 	
-	private class InitDataRunnable implements Runnable {
+    public static void refreshData(List<Map<String, Object>> data) {
+    	mData = data;
+    }
+    
+	public class InitDataRunnable implements Runnable {
 		@Override
 		public void run() {
 			if(mData == null) {

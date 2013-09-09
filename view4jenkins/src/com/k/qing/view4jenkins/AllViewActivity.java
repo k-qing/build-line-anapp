@@ -1,30 +1,23 @@
 package com.k.qing.view4jenkins;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.k.qing.view4jenkins.AllViewHandler.InitDataRunnable;
 import com.k.qing.view4jenkins.bean.JViewer;
-import com.k.qing.view4jenkins.bean.JenkinsProject;
 import com.k.qing.view4jenkins.bean.JenkinsView;
 import com.k.qing.view4jenkins.util.JenkinsJsonParser;
 
@@ -46,7 +39,7 @@ public class AllViewActivity extends Activity {
 	
 	public static ProgressDialog progressDialog;
 	
-	public static String jenkinsURL = "http://147.128.17.152:8080/jenkins/";
+	public static String jenkinsURL = "http://169.254.113.233:8080/jenkins/";
 	
 	private Handler progressDialogHandler = new AllViewHandler(this);
 	
@@ -82,6 +75,19 @@ public class AllViewActivity extends Activity {
 							try {
 								jViewer = new JViewer(jenkinsURL, userName, password);
 								jViewer.initConnection();
+								try {
+									List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
+									JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+									List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.jenkinsURL);
+									for(JenkinsView jenkinsView : jenkinsViewList) {
+										Map<String, Object> viewMap = new HashMap<String, Object>();
+										viewMap.put("name", jenkinsView.getName());
+										data.add(viewMap);
+									}
+									AllViewHandler.refreshData(data);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 								progressDialogHandler.sendEmptyMessage(0);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
