@@ -35,12 +35,13 @@ public class AllViewHandler extends Handler {
 		if (activity != null) {
 			switch (msg.what) {
 			case 0:
-				AllViewActivity.progressDialog.dismiss();
+				if(AllViewActivity.progressDialog != null) {
+					AllViewActivity.progressDialog.dismiss();
+				}
 				activity.setContentView(R.layout.activity_all_view);
 				ListView expandableListView = (ListView) activity.findViewById(R.id.mainListView);
 				MyAdapter listAdapter = new MyAdapter(activity);
 				expandableListView.setAdapter(listAdapter);
-//				this.initExpandableData();
 				return;
 			default:
 				break;
@@ -69,7 +70,7 @@ public class AllViewHandler extends Handler {
 			
 			try {
 				JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-				List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.jenkinsURL);
+				List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.JENKINS_URL);
 				for(JenkinsView jenkinsView : jenkinsViewList) {
 					Map<String, Object> viewMap = new HashMap<String, Object>();
 					viewMap.put("name", jenkinsView.getName());

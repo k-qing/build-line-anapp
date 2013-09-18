@@ -25,7 +25,7 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				String jenkinsURL = editTextJenkinsURL.getText().toString();
 				if (jenkinsURL != null) {
-					AllViewActivity.jenkinsURL = jenkinsURL;
+					AllViewActivity.JENKINS_URL = jenkinsURL;
 					Intent intent = new Intent();
 					intent.setClass(LoginActivity.this, AllViewActivity.class);
 					startActivity(intent);

@@ -7,6 +7,8 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,14 +18,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.k.qing.view4jenkins.AllViewHandler.InitDataRunnable;
 import com.k.qing.view4jenkins.bean.JViewer;
 import com.k.qing.view4jenkins.bean.JenkinsView;
 import com.k.qing.view4jenkins.util.JenkinsJsonParser;
 
 public class AllViewActivity extends Activity {
 
-	private JViewer jViewer;
+	private static JViewer jViewer;
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -39,7 +40,10 @@ public class AllViewActivity extends Activity {
 	
 	public static ProgressDialog progressDialog;
 	
-	public static String jenkinsURL = "http://169.254.113.233:8080/jenkins/";
+	public static String JENKINS_URL = "http://125.33.125.19:8080/jenkins/";
+	
+	public static final String PREFS_JENKINS_URL = "prefsJenkinsURL";
+	
 	
 	private Handler progressDialogHandler = new AllViewHandler(this);
 	
@@ -47,13 +51,44 @@ public class AllViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (jViewer != null) {
-
+		SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
+		String prefsJenkinsURL = myPrefs.getString(PREFS_JENKINS_URL, PREFS_JENKINS_URL);
+		
+		if (!prefsJenkinsURL.equals(PREFS_JENKINS_URL)) {
+			JENKINS_URL = prefsJenkinsURL;
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						jViewer = new JViewer(JENKINS_URL, "", "");
+						jViewer.initConnection();
+						try {
+							List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
+							JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+							List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(JENKINS_URL);
+							for(JenkinsView jenkinsView : jenkinsViewList) {
+								Map<String, Object> viewMap = new HashMap<String, Object>();
+								viewMap.put("name", jenkinsView.getName());
+								data.add(viewMap);
+							}
+							AllViewHandler.refreshData(data);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						progressDialogHandler.sendEmptyMessage(0);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}.start();
+			
 		} else {
 			setContentView(R.layout.login_view);
 			Button buttonLogin = (Button)findViewById(R.id.buttonLogin);
 			
 			buttonLogin.setOnClickListener(new OnClickListener() {
+				
 				@Override
 				public void onClick(View v) {
 					progressDialog = new ProgressDialog(AllViewActivity.this);
@@ -72,13 +107,19 @@ public class AllViewActivity extends Activity {
 							String userName = editTextUserName.getText().toString();
 							String password = editTextPassword.getText().toString();
 							
+							JENKINS_URL = jenkinsURL;
+							SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
+							Editor editor = myPrefs.edit();
+							editor.putString(PREFS_JENKINS_URL, jenkinsURL);
+							editor.commit();
+							
 							try {
 								jViewer = new JViewer(jenkinsURL, userName, password);
 								jViewer.initConnection();
 								try {
 									List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
 									JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-									List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.jenkinsURL);
+									List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.JENKINS_URL);
 									for(JenkinsView jenkinsView : jenkinsViewList) {
 										Map<String, Object> viewMap = new HashMap<String, Object>();
 										viewMap.put("name", jenkinsView.getName());
