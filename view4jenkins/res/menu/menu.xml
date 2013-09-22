@@ -1,0 +1,26 @@
+<!-- /res/menu/menu.xml -->
+<menu 
+xmlns:android="http://schemas.android.com/apk/res/android">
+ <group android:id="@+id/menuGroup_Main">
+
+        <item android:id="@+id/menu_search"
+            android:title="Search"
+			android:showAsAction="ifRoom"  
+			android:actionViewClass="android.widget.SearchView"            
+            />
+            
+        <item android:id="@+id/menu_icon_test"
+            android:title="settings"
+            android:icon="@drawable/creep003"
+            android:showAsAction="ifRoom"/>
+            
+        <item android:id="@+id/menu_invoke_standardnav"
+            android:title="Info"
+            />
+            
+        <item android:id="@+id/menu_invoke_tabnav"
+            android:title="Quit"
+            />
+            
+    </group>
+</menu>

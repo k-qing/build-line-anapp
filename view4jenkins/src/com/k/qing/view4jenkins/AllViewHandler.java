@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
@@ -39,6 +41,23 @@ public class AllViewHandler extends Handler {
 					AllViewActivity.progressDialog.dismiss();
 				}
 				activity.setContentView(R.layout.activity_all_view);
+				
+				ActionBar bar = activity.getActionBar();
+				bar.setTitle("Try tab action bar");
+				bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+				
+				AllViewTabListener tl = new AllViewTabListener();
+				
+				Tab tab1 = bar.newTab();
+		    	tab1.setText("Tab1");
+		    	tab1.setTabListener(tl);
+		    	bar.addTab(tab1);
+//		    	
+//		    	Tab tab2 = bar.newTab();
+//		    	tab1.setText("Tab2");
+//		    	tab1.setTabListener(tl);
+//		    	bar.addTab(tab2);
+				
 				ListView expandableListView = (ListView) activity.findViewById(R.id.mainListView);
 				MyAdapter listAdapter = new MyAdapter(activity);
 				expandableListView.setAdapter(listAdapter);
