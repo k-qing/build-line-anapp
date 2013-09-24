@@ -28,6 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.k.qing.view4jenkins.SettingActivity"
+            android:label="Settings">
+        </activity>
     </application>
 
 </manifest>

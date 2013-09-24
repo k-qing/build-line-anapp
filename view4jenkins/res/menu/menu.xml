@@ -3,13 +3,7 @@
 xmlns:android="http://schemas.android.com/apk/res/android">
  <group android:id="@+id/menuGroup_Main">
 
-        <item android:id="@+id/menu_search"
-            android:title="Search"
-			android:showAsAction="ifRoom"  
-			android:actionViewClass="android.widget.SearchView"            
-            />
-            
-        <item android:id="@+id/menu_icon_test"
+        <item android:id="@+id/menu_icon_settings"
             android:title="settings"
             android:icon="@drawable/creep003"
             android:showAsAction="ifRoom"/>

@@ -7,12 +7,14 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -95,14 +97,14 @@ public class AllViewActivity extends Activity {
 					progressDialog.setMessage("Please wait...");
 					progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 					progressDialog.show();
-					
+			
 					new Thread() {
 						@Override
 						public void run() {
 							EditText editTextJenkinsURL = (EditText) findViewById(R.id.editTextJenkinsURL);
 							EditText editTextUserName = (EditText) findViewById(R.id.editTextUser);
 							EditText editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-							
+										
 							String jenkinsURL = editTextJenkinsURL.getText().toString();
 							String userName = editTextUserName.getText().toString();
 							String password = editTextPassword.getText().toString();
@@ -153,8 +155,24 @@ public class AllViewActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu, menu);
+		
+		
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+    		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmain");
+    		return true;
+    	}
+		if (item.getItemId() == R.id.menu_icon_settings){
+			Intent intent = new Intent(this, SettingActivity.class);
+			this.startActivity(intent);
+    		return true;
+    	}
+		return false;
+    }
 
 
 	public void update(List<JenkinsView> jenkinsViewList) {
