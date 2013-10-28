@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header 
+        android:fragment="com.k.qing.view4jenkins.SettingFragment"
+        android:title="Jenkins Configuration"
+        android:summary="Jenkins Configuration" />
+    <header 
+        android:title="Release Info"
+        android:summary="Release Info" />
+</preference-headers>

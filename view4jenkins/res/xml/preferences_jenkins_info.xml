@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditTextPreference 
+        android:key="pref_jenkins_url_key"
+        android:title="Jenkins URL"
+        android:summary="Jenkins URL"
+        android:defaultValue="http://147.128.17.152:8080/jenkins"
+        />
+    <EditTextPreference 
+        android:key="pref_jenkins_user_key"
+        android:title="Jenkins User"
+        android:summary="Jenkins User"
+        />
+    
+    <EditTextPreference 
+        android:key="pref_jenkins_password_key"
+        android:title="Jenkins Password"
+        />
+</PreferenceScreen>

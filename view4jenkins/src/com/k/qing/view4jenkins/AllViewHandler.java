@@ -43,6 +43,7 @@ public class AllViewHandler extends Handler {
 				activity.setContentView(R.layout.activity_all_view);
 				
 				ActionBar bar = activity.getActionBar();
+				bar.setDisplayHomeAsUpEnabled(true); 
 				bar.setTitle("Try tab action bar");
 				bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 				

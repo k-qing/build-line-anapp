@@ -147,7 +147,9 @@ public class AllViewActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		progressDialog.dismiss();
+		if(progressDialog != null) {
+			progressDialog.dismiss();
+		}
 	}
 
 
