@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name="com.k.qing.view4jenkins.SettingActivity"
+            android:name="com.k.qing.view4jenkins.preference.SettingsActivity"
             android:label="Settings">
         </activity>
     </application>

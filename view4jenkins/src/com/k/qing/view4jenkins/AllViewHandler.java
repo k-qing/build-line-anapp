@@ -44,13 +44,13 @@ public class AllViewHandler extends Handler {
 				
 				ActionBar bar = activity.getActionBar();
 				bar.setDisplayHomeAsUpEnabled(true); 
-				bar.setTitle("Try tab action bar");
+//				bar.setTitle("Try tab action bar");
 				bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 				
 				AllViewTabListener tl = new AllViewTabListener();
 				
 				Tab tab1 = bar.newTab();
-		    	tab1.setText("Tab1");
+		    	tab1.setText("Jenkins View");
 		    	tab1.setTabListener(tl);
 		    	bar.addTab(tab1);
 //		    	

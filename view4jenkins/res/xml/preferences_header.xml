@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header 
-        android:fragment="com.k.qing.view4jenkins.SettingFragment"
+        android:fragment="com.k.qing.view4jenkins.preference.SettingsFragment"
         android:title="Jenkins Configuration"
         android:summary="Jenkins Configuration" />
     <header 

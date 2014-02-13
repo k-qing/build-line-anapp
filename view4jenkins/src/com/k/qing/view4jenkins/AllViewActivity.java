@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,6 +23,8 @@ import android.widget.EditText;
 
 import com.k.qing.view4jenkins.bean.JViewer;
 import com.k.qing.view4jenkins.bean.JenkinsView;
+import com.k.qing.view4jenkins.preference.Const;
+import com.k.qing.view4jenkins.preference.SettingsActivity;
 import com.k.qing.view4jenkins.util.JenkinsJsonParser;
 
 public class AllViewActivity extends Activity {
@@ -44,9 +47,6 @@ public class AllViewActivity extends Activity {
 	
 	public static String JENKINS_URL = "http://125.33.125.19:8080/jenkins/";
 	
-	public static final String PREFS_JENKINS_URL = "prefsJenkinsURL";
-	
-	
 	private Handler progressDialogHandler = new AllViewHandler(this);
 	
 	@Override
@@ -54,9 +54,9 @@ public class AllViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
-		String prefsJenkinsURL = myPrefs.getString(PREFS_JENKINS_URL, PREFS_JENKINS_URL);
+		String prefsJenkinsURL = myPrefs.getString(Const.PREFS_JENKINS_URL, Const.PREFS_JENKINS_URL);
 		
-		if (!prefsJenkinsURL.equals(PREFS_JENKINS_URL)) {
+		if (!prefsJenkinsURL.equals(Const.PREFS_JENKINS_URL)) {
 			JENKINS_URL = prefsJenkinsURL;
 			new Thread() {
 				@Override
@@ -112,7 +112,7 @@ public class AllViewActivity extends Activity {
 							JENKINS_URL = jenkinsURL;
 							SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
 							Editor editor = myPrefs.edit();
-							editor.putString(PREFS_JENKINS_URL, jenkinsURL);
+							editor.putString(Const.PREFS_JENKINS_URL, jenkinsURL);
 							editor.commit();
 							
 							try {
@@ -165,11 +165,11 @@ public class AllViewActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-    		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmain");
+			System.out.println("sssssssssssssssssssssssssssssssssssssssss");
     		return true;
     	}
 		if (item.getItemId() == R.id.menu_icon_settings){
-			Intent intent = new Intent(this, SettingActivity.class);
+			Intent intent = new Intent(this, SettingsActivity.class);
 			this.startActivity(intent);
     		return true;
     	}
