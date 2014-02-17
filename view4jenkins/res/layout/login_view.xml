@@ -15,38 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textUri"
-        android:text="http://125.33.125.19:8080/jenkins/"
+        android:text="http://147.128.12.152:9980/"
         android:ems="10" >
 
         <requestFocus />
     </EditText>
-    
-    <TextView
-        android:id="@+id/textViewUser"
+
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User" />
-
-    <EditText
-        android:id="@+id/editTextUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-    </EditText>
+        android:src="@drawable/jenkins" />
     
-    <TextView
-        android:id="@+id/textViewPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password" />
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-    </EditText>
-
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"

@@ -31,16 +31,16 @@ public class AllViewActivity extends Activity {
 
 	private static JViewer jViewer;
 	
-	private Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 1:
-				List<JenkinsView> jenkinsViewList = (List<JenkinsView>) msg.obj;
-				update(jenkinsViewList);
-				break;
-			}
-		};
-	};
+//	private Handler handler = new Handler() {
+//		public void handleMessage(Message msg) {
+//			switch (msg.what) {
+//			case 1:
+//				List<JenkinsView> jenkinsViewList = (List<JenkinsView>) msg.obj;
+//				update(jenkinsViewList);
+//				break;
+//			}
+//		};
+//	};
 	
 	
 	public static ProgressDialog progressDialog;
@@ -102,12 +102,7 @@ public class AllViewActivity extends Activity {
 						@Override
 						public void run() {
 							EditText editTextJenkinsURL = (EditText) findViewById(R.id.editTextJenkinsURL);
-							EditText editTextUserName = (EditText) findViewById(R.id.editTextUser);
-							EditText editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-										
 							String jenkinsURL = editTextJenkinsURL.getText().toString();
-							String userName = editTextUserName.getText().toString();
-							String password = editTextPassword.getText().toString();
 							
 							JENKINS_URL = jenkinsURL;
 							SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
@@ -116,7 +111,7 @@ public class AllViewActivity extends Activity {
 							editor.commit();
 							
 							try {
-								jViewer = new JViewer(jenkinsURL, userName, password);
+								jViewer = new JViewer(jenkinsURL, "", "");
 								jViewer.initConnection();
 								try {
 									List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
