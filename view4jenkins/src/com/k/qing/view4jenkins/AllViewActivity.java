@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -161,15 +159,32 @@ public class AllViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			System.out.println("sssssssssssssssssssssssssssssssssssssssss");
-    		return true;
-    	}
-		if (item.getItemId() == R.id.menu_icon_settings){
+			return true;
+		} else if (item.getItemId() == R.id.menu_icon_refresh) {
+			try {
+				List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+				JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+				List<JenkinsView> jenkinsViewList = jenkinsJsonParser
+						.getViewList(JENKINS_URL);
+				for (JenkinsView jenkinsView : jenkinsViewList) {
+					Map<String, Object> viewMap = new HashMap<String, Object>();
+					viewMap.put("name", jenkinsView.getName());
+					data.add(viewMap);
+				}
+				AllViewHandler.refreshData(data);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			progressDialogHandler.sendEmptyMessage(0);
+			return true;
+		} else if (item.getItemId() == R.id.menu_icon_settings) {
 			Intent intent = new Intent(this, SettingsActivity.class);
 			this.startActivity(intent);
-    		return true;
-    	}
+			return true;
+		}
+
 		return false;
-    }
+	}
 
 
 	public void update(List<JenkinsView> jenkinsViewList) {
