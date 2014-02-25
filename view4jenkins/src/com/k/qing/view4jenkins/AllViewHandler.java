@@ -27,14 +27,20 @@ public class AllViewHandler extends Handler {
 	
 	private static List<Map<String, Object>> mData = new ArrayList<Map<String,Object>>();
 	
+	private MyAdapter listAdapter = null;
+	private ListView expandableListView = null;
+	
     public AllViewHandler(Activity activity) {
         mActivity = new WeakReference<Activity>(activity);
     }
+    
     @Override
     public void handleMessage(Message msg) {
 		System.out.println(msg);
 		Activity activity = mActivity.get();
 		if (activity != null) {
+			listAdapter = new MyAdapter(activity);
+			
 			switch (msg.what) {
 			case 0:
 				if(AllViewActivity.progressDialog != null) {
@@ -53,15 +59,14 @@ public class AllViewHandler extends Handler {
 		    	tab1.setText("Jenkins View");
 		    	tab1.setTabListener(tl);
 		    	bar.addTab(tab1);
-//		    	
-//		    	Tab tab2 = bar.newTab();
-//		    	tab1.setText("Tab2");
-//		    	tab1.setTabListener(tl);
-//		    	bar.addTab(tab2);
-				
-				ListView expandableListView = (ListView) activity.findViewById(R.id.mainListView);
-				MyAdapter listAdapter = new MyAdapter(activity);
-				expandableListView.setAdapter(listAdapter);
+		    	
+		    	this.expandableListView = (ListView) activity.findViewById(R.id.mainListView);
+		    	this.expandableListView.setAdapter(listAdapter);
+				return;
+			case 1:
+				System.out.println(mData);
+				this.expandableListView.setAdapter(listAdapter);
+				listAdapter.notifyDataSetChanged();
 				return;
 			default:
 				break;
@@ -71,36 +76,11 @@ public class AllViewHandler extends Handler {
 		}
     }
     
-    public void initExpandableData() {
-		new Thread(new InitDataRunnable()).start();
-	}
-	
     public static void refreshData(List<Map<String, Object>> data) {
-    	mData = data;
+    	mData.clear();
+    	mData.addAll(data);
     }
     
-	public class InitDataRunnable implements Runnable {
-		@Override
-		public void run() {
-			if(mData == null) {
-				mData = new ArrayList<Map<String,Object>>();
-			} else {
-				mData.clear();
-			}
-			
-			try {
-				JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-				List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(AllViewActivity.JENKINS_URL);
-				for(JenkinsView jenkinsView : jenkinsViewList) {
-					Map<String, Object> viewMap = new HashMap<String, Object>();
-					viewMap.put("name", jenkinsView.getName());
-					mData.add(viewMap);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	public final class ViewHolder {
 		public TextView name;
@@ -148,7 +128,6 @@ public class AllViewHandler extends Handler {
             holder.name.setText((String)mData.get(position).get("name"));
             return convertView;
         }
-         
     }
 }
 

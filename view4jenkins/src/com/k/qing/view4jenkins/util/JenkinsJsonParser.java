@@ -23,6 +23,10 @@ public class JenkinsJsonParser {
 		List<JenkinsView> jenkinsViewList = new ArrayList<JenkinsView>();
 		String url = jenkinsUrl;
 		
+		if (!url.endsWith("/")) {
+			url = url + "/";
+		}
+		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpPost request = new HttpPost(url + "api/json");
 		HttpResponse response;

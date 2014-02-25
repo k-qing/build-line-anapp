@@ -29,18 +29,6 @@ public class AllViewActivity extends Activity {
 
 	private static JViewer jViewer;
 	
-//	private Handler handler = new Handler() {
-//		public void handleMessage(Message msg) {
-//			switch (msg.what) {
-//			case 1:
-//				List<JenkinsView> jenkinsViewList = (List<JenkinsView>) msg.obj;
-//				update(jenkinsViewList);
-//				break;
-//			}
-//		};
-//	};
-	
-	
 	public static ProgressDialog progressDialog;
 	
 	public static String JENKINS_URL = "http://125.33.125.19:8080/jenkins/";
@@ -54,36 +42,36 @@ public class AllViewActivity extends Activity {
 		SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
 		String prefsJenkinsURL = myPrefs.getString(Const.PREFS_JENKINS_URL, Const.PREFS_JENKINS_URL);
 		
-		if (!prefsJenkinsURL.equals(Const.PREFS_JENKINS_URL)) {
-			JENKINS_URL = prefsJenkinsURL;
-			new Thread() {
-				@Override
-				public void run() {
-					try {
-						jViewer = new JViewer(JENKINS_URL, "", "");
-						jViewer.initConnection();
-						try {
-							List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
-							JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-							List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(JENKINS_URL);
-							for(JenkinsView jenkinsView : jenkinsViewList) {
-								Map<String, Object> viewMap = new HashMap<String, Object>();
-								viewMap.put("name", jenkinsView.getName());
-								data.add(viewMap);
-							}
-							AllViewHandler.refreshData(data);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						progressDialogHandler.sendEmptyMessage(0);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				
-			}.start();
-			
-		} else {
+//		if (!prefsJenkinsURL.equals(Const.PREFS_JENKINS_URL)) {
+//			JENKINS_URL = prefsJenkinsURL;
+//			new Thread() {
+//				@Override
+//				public void run() {
+//					try {
+//						jViewer = new JViewer(JENKINS_URL, "", "");
+//						jViewer.initConnection();
+//						try {
+//							List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
+//							JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+//							List<JenkinsView> jenkinsViewList = jenkinsJsonParser.getViewList(JENKINS_URL);
+//							for(JenkinsView jenkinsView : jenkinsViewList) {
+//								Map<String, Object> viewMap = new HashMap<String, Object>();
+//								viewMap.put("name", jenkinsView.getName());
+//								data.add(viewMap);
+//							}
+//							AllViewHandler.refreshData(data);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//						progressDialogHandler.sendEmptyMessage(0);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				
+//			}.start();
+//			
+//		} else {
 			setContentView(R.layout.login_view);
 			Button buttonLogin = (Button)findViewById(R.id.buttonLogin);
 			
@@ -134,7 +122,7 @@ public class AllViewActivity extends Activity {
 					}.start();
 				}
 			});
-		}
+//		}
 	}
 	
 	@Override
@@ -161,21 +149,27 @@ public class AllViewActivity extends Activity {
 			System.out.println("sssssssssssssssssssssssssssssssssssssssss");
 			return true;
 		} else if (item.getItemId() == R.id.menu_icon_refresh) {
-			try {
-				List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-				JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
-				List<JenkinsView> jenkinsViewList = jenkinsJsonParser
-						.getViewList(JENKINS_URL);
-				for (JenkinsView jenkinsView : jenkinsViewList) {
-					Map<String, Object> viewMap = new HashMap<String, Object>();
-					viewMap.put("name", jenkinsView.getName());
-					data.add(viewMap);
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+						JenkinsJsonParser jenkinsJsonParser = new JenkinsJsonParser();
+						List<JenkinsView> jenkinsViewList = jenkinsJsonParser
+								.getViewList(JENKINS_URL);
+						for (JenkinsView jenkinsView : jenkinsViewList) {
+							Map<String, Object> viewMap = new HashMap<String, Object>();
+							viewMap.put("name", jenkinsView.getName());
+							data.add(viewMap);
+						}
+						AllViewHandler.refreshData(data);
+						progressDialogHandler.sendEmptyMessage(1);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-				AllViewHandler.refreshData(data);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			progressDialogHandler.sendEmptyMessage(0);
+			}.start();
+			
 			return true;
 		} else if (item.getItemId() == R.id.menu_icon_settings) {
 			Intent intent = new Intent(this, SettingsActivity.class);

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textUri"
-        android:text="http://147.128.12.152:9980/"
+        android:text="http://192.168.0.7:8080/jenkins/"
         android:ems="10" >
 
         <requestFocus />
